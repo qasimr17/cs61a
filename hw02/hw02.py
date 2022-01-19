@@ -34,6 +34,11 @@ def product(n, f):
     162
     """
     "*** YOUR CODE HERE ***"
+    total, k = 1, 1
+    while k <= n:
+        total, k = total * f(k), k + 1
+    return total 
+
 
 def accumulate(combiner, base, n, f):
     """Return the result of combining the first n terms in a sequence and base.
