@@ -101,7 +101,7 @@ def product_using_accumulate(n, f):
     """
     "*** YOUR CODE HERE ***"
     return accumulate(mul, 1, n, f)
-    
+
 def compose1(h, g):
     """Return a function f, such that f(x) = h(g(x))."""
     def f(x):
@@ -124,6 +124,23 @@ def make_repeater(h, n):
     5
     """
     "*** YOUR CODE HERE ***"
+    # def f(x):
+    #     if n > 0:
+    #         for _ in range(n):
+    #             x = h(x)
+    #         return x
+    #     return x
+    # return f
+    
+    # ALTERNATE SOLUTION
+    f = h
+    if n == 0:
+        return identity
+    for _ in range(n - 1): # need n - 1 since compose1 will return h(h(x)) one the first call as well aka 2 in the first call
+        f = compose1(f, h)
+    return f 
+
+
 
 
 ##########################
