@@ -63,6 +63,11 @@ def accumulate(combiner, base, n, f):
     16
     """
     "*** YOUR CODE HERE ***"
+    total, k = base, 1 
+    while k <= n:
+        total, k = combiner(total, f(k)), k + 1
+    return total  
+
 
 def summation_using_accumulate(n, f):
     """Returns the sum of f(1) + ... + f(n). The implementation
@@ -79,6 +84,7 @@ def summation_using_accumulate(n, f):
     True
     """
     "*** YOUR CODE HERE ***"
+    return accumulate(add, 0, n, f)
 
 def product_using_accumulate(n, f):
     """An implementation of product using accumulate.
@@ -94,7 +100,8 @@ def product_using_accumulate(n, f):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    return accumulate(mul, 1, n, f)
+    
 def compose1(h, g):
     """Return a function f, such that f(x) = h(g(x))."""
     def f(x):
