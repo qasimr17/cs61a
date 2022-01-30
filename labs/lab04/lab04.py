@@ -62,6 +62,13 @@ def gcd(a, b):
     40
     """
     "*** YOUR CODE HERE ***"
+    min_, max_ = min(a,b), max(a, b)
+    if min_ == 1:
+        return 1 
+    elif max_ % min_ == 0:
+        return min_ 
+    
+    return gcd(min_, max_ % min_)
 
 def paths(m, n):
     """Return the number of paths from one corner of an
@@ -77,6 +84,23 @@ def paths(m, n):
     1
     """
     "*** YOUR CODE HERE ***"
+
+    # In words, our solution states that:
+    # At every position (i, j),
+    # the number of paths to the goal 
+    # is equal to the number of paths from (i+1, j) and (i, j+1)
+    # therefore, reducing the grid size at each step
+    total = 0
+    def search(i, j, total):
+        if i == m-1 and j == n-1:
+            return 1
+        elif i == m or j == n:
+            return 0 
+        total += search(i+1, j, total) + search(i, j+1, total)
+        return total 
+        
+    return search(0, 0, total)
+
 
 
 def max_subseq(n, l):
