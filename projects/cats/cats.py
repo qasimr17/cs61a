@@ -1,5 +1,4 @@
 """Typing test implementation"""
-
 from utils import *
 from ucb import main, interact, trace
 from datetime import datetime
@@ -95,8 +94,18 @@ def autocorrect(user_word, valid_words, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 5
+    if user_word in valid_words:
+        return user_word
 
+    diff_array = [diff_function(user_word, word, limit) for word in valid_words]
+    if all([i > limit for i in diff_array]):
+        return user_word
+
+    max_num = max(diff_array, key=lambda x: limit - x)
+    max_index = diff_array.index(max_num)
+    return valid_words[max_index]
+    
+    # END PROBLEM 5
 
 def sphinx_swap(start, goal, limit):
     """A diff function for autocorrect that determines how many letters
@@ -104,32 +113,43 @@ def sphinx_swap(start, goal, limit):
     their lengths.
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
-    # END PROBLEM 6
+    # assert False, 'Remove this line'
+    mismatch = 0
+    def count(start, goal, limit):
+        nonlocal mismatch
+        if mismatch > limit:
+            return limit + 1 
+        if start == "" or goal == "":
+            return mismatch
+        if start[0] != goal[0]:
+            mismatch += 1 
+        start, goal = start[1:], goal[1:]
+        return count(start, goal, limit)
+    
+    return count(start, goal, limit) + abs(len(start) - len(goal))
+        
+        # END PROBLEM 6
 
 
 def feline_fixes(start, goal, limit):
+
+    # Credits for this implementation to:
+    # https://github.com/nam-m/CS61A-Projects/blob/master/cats/typing.py
+
     """A diff function that computes the edit distance from START to GOAL."""
-    assert False, 'Remove this line'
-
-    if ______________: # Fill in the condition
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-
-    elif ___________: # Feel free to remove or add additional cases
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-
+    if limit < 0:
+        return 1
+    elif start == goal: 
+        return 0
+    elif min(len(start), len(goal)) == 0:
+        return max(len(start), len(goal))
     else:
-        add_diff = ...  # Fill in these lines
-        remove_diff = ... 
-        substitute_diff = ... 
-        # BEGIN
-        "*** YOUR CODE HERE ***"
-        # END
-
+        diff = start[0] != goal[0]
+        add_diff = 1 + feline_fixes(start, goal[1:], limit-1)
+        remove_diff = 1 + feline_fixes(start[1:], goal, limit-1)
+        substitute_diff = diff + feline_fixes(start[1:], goal[1:], limit-diff)
+    return min(add_diff, remove_diff, substitute_diff)
+    
 
 def final_diff(start, goal, limit):
     """A diff function. If you implement this function, it will be used."""
@@ -145,7 +165,17 @@ def report_progress(typed, prompt, id, send):
     """Send a report of your id and progress so far to the multiplayer server."""
     # BEGIN PROBLEM 8
     "*** YOUR CODE HERE ***"
+    correct = 0
+    for i in range(len(typed)):
+        if typed[i] == prompt[i]:
+            correct += 1
+        else:
+            break 
+    progress = correct / len(prompt)
+    send({"id":id, "progress":progress})
+    return progress
     # END PROBLEM 8
+    
 
 
 def fastest_words_report(times_per_player, words):
@@ -171,6 +201,13 @@ def time_per_word(times_per_player, words):
     """
     # BEGIN PROBLEM 9
     "*** YOUR CODE HERE ***"
+    list_of_times = []
+    for times in times_per_player:
+        t = [times[i] - times[i-1] for i in range(1, len(times))]
+        list_of_times.append(t)
+    
+    return game(words, list_of_times)
+
     # END PROBLEM 9
 
 
@@ -186,6 +223,17 @@ def fastest_words(game):
     words = range(len(all_words(game)))    # An index for each word
     # BEGIN PROBLEM 10
     "*** YOUR CODE HERE ***"
+    fastest_words_list = [[] for i in players]
+    for word_index in words:
+        word_times = []
+        for player_id in players:
+            word_time = time(game, player_id, word_index)
+            word_times.append(word_time)
+        min_index = word_times.index(min(word_times))
+        word = word_at(game, word_index)
+        fastest_words_list[min_index].append(word)
+
+    return fastest_words_list
     # END PROBLEM 10
 
 
