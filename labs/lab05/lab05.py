@@ -16,7 +16,8 @@ def couple(lst1, lst2):
     """
     assert len(lst1) == len(lst2)
     "*** YOUR CODE HERE ***"
-    return [[lst1[i], lst2[i]] for i in range(len(lst1))]
+    return [list(x) for x in zip(lst1, lst2)]
+    # return [[lst1[i], lst2[i]] for i in range(len(lst1))] alternate solution
 
 from math import sqrt
 from weakref import ref
