@@ -201,7 +201,7 @@ def sprout_leaves(t, values):
     # else:
     #     return tree(label(t), [sprout_leaves(branch, values) for branch in branches(t)])
 
-    # Solution 1:
+    # Solution 1: (but slighlty violates abstraction barrier when using the extend method on lists)
     visited = set()
 
     def new_leaves():
