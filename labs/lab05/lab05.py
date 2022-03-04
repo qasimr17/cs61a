@@ -16,7 +16,8 @@ def couple(lst1, lst2):
     """
     assert len(lst1) == len(lst2)
     "*** YOUR CODE HERE ***"
-    return [[lst1[i], lst2[i]] for i in range(len(lst1))]
+    return [list(x) for x in zip(lst1, lst2)]
+    # return [[lst1[i], lst2[i]] for i in range(len(lst1))] alternate solution
 
 from math import sqrt
 from weakref import ref
@@ -160,6 +161,7 @@ def nut_finder(t):
         return True
     return False  
 
+# visited = set()
 def sprout_leaves(t, values):
     """Sprout new leaves containing the data in values at each leaf in
     the original tree t and return the resulting tree.
@@ -194,12 +196,34 @@ def sprout_leaves(t, values):
           2
     """
     "*** YOUR CODE HERE ***"
-    if is_leaf(t):
-        return tree(label(t), [tree(v) for v in values])
-    else:
-        return tree(label(t), [sprout_leaves(branch, values) for branch in branches(t)])
-    
+    # if is_leaf(t):
+    #     return tree(label(t), [tree(v) for v in values])
+    # else:
+    #     return tree(label(t), [sprout_leaves(branch, values) for branch in branches(t)])
 
+    # Solution 1:
+    visited = set()
+
+    def new_leaves():
+        if is_leaf(t) and label(t) not in visited:
+            visited.add(label(t))
+            new_nodes = [tree(leaf) for leaf in values]
+            t.extend(new_nodes)
+
+        for branch in branches(t):
+            if label(t) not in visited:
+                sprout_leaves(branch, values)
+    
+    new_leaves()
+    visited.clear()
+    return t
+
+    # Solution 2: credit to "https://github.com/haohuaijin/CS61A"
+    # if is_leaf(t):
+    #     return tree(label(t), [tree(v) for v in values])
+    # else:
+    #     return tree(label(t), [sprout_leaves(branch, values) for branch in branches(t)])
+    
 
 # Tree ADT
 def tree(label, branches=[]):
