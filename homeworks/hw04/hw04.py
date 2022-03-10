@@ -1,3 +1,6 @@
+from dataclasses import replace
+
+
 this_file = __file__
 
 # Mobiles
@@ -45,11 +48,13 @@ def planet(size):
     """Construct a planet of some size."""
     assert size > 0
     "*** YOUR CODE HERE ***"
+    return ['planet', size]
 
 def size(w):
     """Select the size of a planet."""
     assert is_planet(w), 'must call size on a planet'
     "*** YOUR CODE HERE ***"
+    return w[1]
 
 def is_planet(w):
     """Whether w is a planet."""
@@ -98,6 +103,17 @@ def balanced(m):
     False
     """
     "*** YOUR CODE HERE ***"
+    # Credits: https://github.com/haohuaijin/CS61A/blob/master/homework/hw04/hw04.py
+    is_left_balanced, is_right_balanced = True, True
+    left_end, right_end = end(left(m)), end(right(m))
+    if not is_planet(left_end):
+        is_left_balanced = balanced(left_end)
+    if not is_planet(right_end):
+        is_right_balanced = balanced(right_end)
+
+    now = (total_weight(left_end) * length(left(m))) == (total_weight(right_end) * length(right(m)))
+
+    return is_left_balanced and is_right_balanced and now 
 
 def totals_tree(m):
     """Return a tree representing the mobile with its total weight at the root.
@@ -125,6 +141,10 @@ def totals_tree(m):
           2
     """
     "*** YOUR CODE HERE ***"
+    if is_planet(m):
+        return tree(size(m))
+
+    return tree(total_weight(m), [totals_tree(end(left(m))), totals_tree(end(right(m)))])
 
 def replace_leaf(t, old, replacement):
     """Returns a new tree where every leaf value equal to old has
@@ -156,6 +176,9 @@ def replace_leaf(t, old, replacement):
     True
     """
     "*** YOUR CODE HERE ***"
+    new_label = replacement if is_leaf(t) and label(t) == old else label(t)
+
+    return tree(new_label, [replace_leaf(branch, old, replacement) for branch in branches(t)])
 
 def make_withdraw(balance, password):
     """Return a password-protected withdraw function.
