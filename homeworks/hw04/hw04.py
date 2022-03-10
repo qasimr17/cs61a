@@ -209,6 +209,23 @@ def make_withdraw(balance, password):
     True
     """
     "*** YOUR CODE HERE ***"
+    password_list = []
+    def withdraw(amt, pwd):
+        nonlocal balance 
+        if len(password_list) == 3:
+            return f"Your account is locked. Attempts: {password_list}"
+        if pwd != password:
+            password_list.append(pwd)
+            return "Incorrect password"
+        if amt > balance:
+            return "Insufficient funds"
+        else:
+            balance -= amt 
+            return balance 
+    return withdraw
+        
+
+
 
 def make_joint(withdraw, old_pass, new_pass):
     """Return a password-protected withdraw function that has joint access to
@@ -249,6 +266,20 @@ def make_joint(withdraw, old_pass, new_pass):
     "Your account is locked. Attempts: ['my', 'secret', 'password']"
     """
     "*** YOUR CODE HERE ***"
+    # first check if old_pass entered is correct or not 
+    value = withdraw(0, old_pass)
+    if type(value) == str:
+        return value 
+    
+    # if it is, create a joint account and use it to alter the withdraw account as well
+    def joint(amt, pwd):
+        if pwd == old_pass or pwd == new_pass:
+            return withdraw(amt, old_pass)
+
+        else:
+            return withdraw(amt, pwd)
+        
+    return joint 
 
 
 
