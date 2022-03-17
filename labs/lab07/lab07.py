@@ -21,7 +21,6 @@ def link_to_list(link):
     return list_
 
 # Trees
-
 def cumulative_mul(t):
     """Mutates t so that each node's label becomes the product of all labels in
     the corresponding subtree rooted at t.
@@ -32,7 +31,15 @@ def cumulative_mul(t):
     Tree(105, [Tree(15, [Tree(5)]), Tree(7)])
     """
     "*** YOUR CODE HERE ***"
-
+    if t.is_leaf():
+        return 
+    else:
+        for b in t.branches:
+            cumulative_mul(b)
+        b_prod = 1 
+        for b in t.branches:
+            b_prod *= b.label 
+        t.label *= b_prod 
 # Link List Class
 class Link:
     """A linked list.
