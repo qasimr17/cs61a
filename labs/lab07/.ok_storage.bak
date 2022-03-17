@@ -3,3 +3,4 @@
 'Player.__init__-correct', (1024, 70)
 'Player.draw-correct', (1536, 70)
 'Player.play-correct', (2048, 70)
+'link_to_list-correct', (2560, 70)

@@ -13,6 +13,12 @@ def link_to_list(link):
     []
     """
     "*** YOUR CODE HERE ***"
+    node, list_ = link, [] 
+    while node:
+        list_.append(node.first)
+        node = node.rest
+
+    return list_
 
 # Trees
 
