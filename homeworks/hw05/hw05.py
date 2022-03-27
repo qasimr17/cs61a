@@ -1,9 +1,5 @@
 
 
-
-import itertools
-
-
 class VendingMachine:
     """A vending machine that vends some product for some price.
 
@@ -109,6 +105,13 @@ def store_digits(n):
     Link(8, Link(7, Link(6)))
     """
     "*** YOUR CODE HERE ***"
+    string_num = str(n)
+    first_digit = int(string_num[0])
+    if len(string_num) == 1:
+        return Link(first_digit)
+    rest_digits = int(string_num[1:]) 
+    
+    return Link(first_digit, store_digits(rest_digits))
 
 def generate_paths(t, value):
     """Yields all possible paths from the root of t to a node with the label value
