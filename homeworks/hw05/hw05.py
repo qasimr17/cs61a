@@ -149,11 +149,12 @@ def generate_paths(t, value):
     """
 
     "*** YOUR CODE HERE ***"
+    if t.label == value:
+        yield [value]
+    for branch in t.branches:
+        for b in generate_paths(branch, value):
+            yield [t.label] + b
 
-    for _______________ in _________________:
-        for _______________ in _________________:
-
-            "*** YOUR CODE HERE ***"
 
 ## Optional Questions
 def is_bst(t):
