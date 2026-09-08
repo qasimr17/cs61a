@@ -8,9 +8,16 @@
 ;; Returns a list of two-element lists
 (define (enumerate s)
   ; BEGIN PROBLEM 14
-  'replace-this-line
-  ; END PROBLEM 14
+  (define (helper s index)
+    (cond 
+      ((null? s) '())
+      (else (cons (list index (car s)) (helper (cdr s) (+ index 1))))
+    )
   )
+
+  (helper s 0)
+  ; END PROBLEM 14
+)
 
 
 ;; Problem 15
@@ -18,22 +25,34 @@
 ;; Return the value for a key in a dictionary list
 (define (get dict key)
   ; BEGIN PROBLEM 15
-  'replace-this-line
-  ; END PROBLEM 15
+  (cond
+    ((null? dict) #f)
+    ((eq? (car (car dict)) key) (cadr (car dict)))
+    (else (get (cdr dict) key))
   )
+  ; END PROBLEM 15
+)
 
 ;; Return a dictionary list with a (key value) pair
 (define (set dict key val)
   ; BEGIN PROBLEM 15
-  'replace-this-line
-  ; END PROBLEM 15
+  (cond
+    ((null? dict) (list (list key val)))
+    ((eq? (car (car dict)) key) (cons (list key val) (cdr dict)))
+    (else (cons (car dict) (set (cdr dict) key val)))
   )
+  ; END PROBLEM 15
+)
 
 ;; Problem 16
 
 ;; implement solution-code
 (define (solution-code problem solution)
-  ; BEGIN PROBLEM 16
-  'replace-this-line
-  ; END PROBLEM 16
-  )
+  (cond
+    ((null? problem) '())
+    ((eq? problem '_____) solution)
+    ((list? problem)
+     (cons (solution-code (car problem) solution)
+           (solution-code (cdr problem) solution)))
+    (else problem))
+)

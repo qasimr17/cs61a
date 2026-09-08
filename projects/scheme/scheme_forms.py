@@ -136,7 +136,31 @@ def do_and_form(expressions, env):
     False
     """
     # BEGIN PROBLEM 12
-    "*** YOUR CODE HERE ***"
+    # Recursive solution:
+    if expressions is nil:
+        return True
+
+    result = scheme_eval(expressions.first, env)
+
+    if expressions.rest is nil:
+        return result
+
+    if is_scheme_false(result):
+        return result
+
+    else:
+        return do_and_form(expressions.rest, env)
+
+    # Iterative solution:
+    # result = True
+
+    # # short-circuiting logic
+    # while expressions is not nil:
+    #     result = scheme_eval(expressions.first, env)
+    #     if is_scheme_false(result):
+    #         return result
+    #     expressions = expressions.rest
+    # return result
     # END PROBLEM 12
 
 
@@ -155,7 +179,31 @@ def do_or_form(expressions, env):
     6
     """
     # BEGIN PROBLEM 12
-    "*** YOUR CODE HERE ***"
+    # Recursive solution:
+    if expressions is nil:
+        return False
+
+    result = scheme_eval(expressions.first, env)
+
+    if expressions.rest is nil:
+        return result
+
+    if is_scheme_true(result):
+        return result
+
+    else:
+        return do_or_form(expressions.rest, env)
+
+    # Iterative solution:
+    # result = False
+
+    # while expressions is not nil:
+    #     result = scheme_eval(expressions.first, env)
+    #     if is_scheme_true(result):
+    #         return result
+    #     expressions = expressions.rest
+
+    # return result
     # END PROBLEM 12
 
 
@@ -176,7 +224,10 @@ def do_cond_form(expressions, env):
             test = scheme_eval(clause.first, env)
         if is_scheme_true(test):
             # BEGIN PROBLEM 13
-            "*** YOUR CODE HERE ***"
+            if clause.rest is nil:
+                return test
+            return eval_all(clause.rest, env)
+
             # END PROBLEM 13
         expressions = expressions.rest
 
@@ -246,7 +297,8 @@ def do_mu_form(expressions, env):
     formals = expressions.first
     validate_formals(formals)
     # BEGIN PROBLEM 11
-    "*** YOUR CODE HERE ***"
+    body = expressions.rest
+    return MuProcedure(formals, body)
     # END PROBLEM 11
 
 
